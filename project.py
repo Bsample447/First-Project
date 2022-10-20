@@ -1,15 +1,12 @@
-from fileinput import filename
-from inspect import getfile
-from lib2to3.pgen2.token import NEWLINE
 from os import system
 import os
-from tkinter import N
-from turtle import clearscreen
+import sys
+
 
 allTasks = []
 
 def getFilename():
-    return os.path.expanduser("~/.task-tracker-tasks")
+    return os.path.expanduser("~/.task-tracker-tasks{user}")
 
 
 def getTasks():
@@ -24,6 +21,8 @@ def getTasks():
 
         while newline != "":
             toReturn += [newline.strip()]
+
+            newline = f.readline()
             
     return toReturn
 
@@ -34,15 +33,19 @@ def writeTasks(tasks):
     with open(filename, "w") as f:
         for t in tasks:
             f.write(f'{t}\n')
-        return f.writelines(tasks)
+        
 
 
 
-def elicitInt(_min, _max):
-    valid = False    
+def elicitInt(_min, _max, msg=None):
+    if msg == None:
+        msg = f"enter a valid interget between {_min} and {_max}: "
+    
+    valid = False  
+
     while not valid:
-        _in = input(f"Enter a Valid interger between {_min} and {_max} \
-            (inclusive of both): ")
+        _in = input(msg)
+        
         try:
             _in = int(_in)
 
@@ -50,8 +53,10 @@ def elicitInt(_min, _max):
                 valid = True 
             else:
                 print("Interger out of bounds")
+        
         except ValueError:
             print("Invalid interger provided")
+    
     return _in
         
 
@@ -61,7 +66,7 @@ def printMenu():
 
 
 def acceptMenuInput():
-    return elicitInt(1, 5,)
+    return elicitInt(1, 5, "Select a menu item: ")
 
 
 
@@ -114,6 +119,13 @@ def ClearScreen():
 
 
 def main():
+    if len(sys.argv) == 1:
+        user = ""
+    if len(sys.argv) == 2:
+        user = f"_{sys.argv[1]}"
+
+
+
     global allTasks
     allTasks = getTasks()
 
@@ -121,14 +133,16 @@ def main():
     
     while not _quit:
           ClearScreen()
+
           printMenu()
     
           userInput = acceptMenuInput()
 
           _quit = handleMenuInput(userInput)
-          
-
-print("Bye")
+    
+    writeTasks(allTasks)
+    
+    print("Bye")
 
 if __name__ == "__main__":
     main()
