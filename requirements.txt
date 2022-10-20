@@ -1,0 +1,23 @@
+TODO application.
+
+add and delete completed tasks, list tasks, in the order they were inserted 
+
+persist across runs 
+
+print list of tasks with each run under one command
+but normally prompt task recall
+
+
+
+every user gets their own list 2-3 users
+
+editable storage format, via text editor 
+
+(minimum viaable product )
+
+
+(full requirements)
+
+
+(stretch goals)
+Timestamps on tasks with optional display 
