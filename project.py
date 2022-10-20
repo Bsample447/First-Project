@@ -2,15 +2,14 @@ from os import system
 import os
 import sys
 
-
 allTasks = []
 
-def getFilename():
-    return os.path.expanduser("~/.task-tracker-tasks{user}")
+def getFilename(user):
+    return os.path.expanduser(f"~/.task-tracker-tasks{user}")
 
 
-def getTasks():
-    fileName = getFilename()
+def getTasks(user):
+    fileName = getFilename(user)
 
     if not os.path.exists(fileName): return []
 
@@ -27,15 +26,13 @@ def getTasks():
     return toReturn
 
 
-def writeTasks(tasks):
-    filename = getFilename()
+def writeTasks(user, tasks):
+    filename = getFilename(user)
     
     with open(filename, "w") as f:
         for t in tasks:
             f.write(f'{t}\n')
         
-
-
 
 def elicitInt(_min, _max, msg=None):
     if msg == None:
@@ -67,7 +64,6 @@ def printMenu():
 
 def acceptMenuInput():
     return elicitInt(1, 5, "Select a menu item: ")
-
 
 
 def addTask():
@@ -124,10 +120,8 @@ def main():
     if len(sys.argv) == 2:
         user = f"_{sys.argv[1]}"
 
-
-
     global allTasks
-    allTasks = getTasks()
+    allTasks = getTasks(user)
 
     _quit = False
     
@@ -140,7 +134,7 @@ def main():
 
           _quit = handleMenuInput(userInput)
     
-    writeTasks(allTasks)
+    writeTasks(user, allTasks)
     
     print("Bye")
 
