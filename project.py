@@ -1,5 +1,40 @@
+from fileinput import filename
+from inspect import getfile
+from lib2to3.pgen2.token import NEWLINE
 from os import system
 import os
+from tkinter import N
+from turtle import clearscreen
+
+allTasks = []
+
+def getFilename():
+    return os.path.expanduser("~/.task-tracker-tasks")
+
+
+def getTasks():
+    fileName = getFilename()
+
+    if not os.path.exists(fileName): return []
+
+    toReturn = []
+    
+    with open(fileName) as f:
+        newline = f.readline()
+
+        while newline != "":
+            toReturn += [newline.strip()]
+            
+    return toReturn
+
+
+def writeTasks(tasks):
+    filename = getFilename()
+    
+    with open(filename, "w") as f:
+        for t in tasks:
+            f.write(f'{t}\n')
+        return f.writelines(tasks)
 
 
 
@@ -21,17 +56,34 @@ def elicitInt(_min, _max):
         
 
 def printMenu():
-    print("1:) Add  2) List  3) Delete   4) Count Tasks  5)  Quit")
+    ListTasks()
+    print("\n1:) Add  2) List  3) Delete   4) Count Tasks  5)  Quit")
 
 
-def acceptInput():
+def acceptMenuInput():
     return elicitInt(1, 5,)
 
 
-def addTask(): pass
-def ListTasks(): pass
-def DeleteTasks(): pass
-def countTasks(): pass   
+
+def addTask():
+    global allTasks
+
+    task = input("Enter a task to add: ")
+
+    allTasks += [task]
+
+def ListTasks():
+    for i in range(len(allTasks)):
+        print(f"{i + 1}. {allTasks[i]}")
+
+def DeleteTasks():
+    toDelete = elicitInt(1, len(allTasks), "Specify a task to delete: ")
+
+    del allTasks[toDelete - 1]
+
+def CountTasks():
+    print(f"\nThere are {len(allTasks)} tasks.")
+    input("Press enter to continue...")
 
 
 def handleMenuInput(userInput):
@@ -40,11 +92,11 @@ def handleMenuInput(userInput):
     if userInput == 1:
         addTask()
     elif userInput == 2:
-        listTasks()
+        ListTasks()
     elif userInput == 3:
-        deleteTask()
+        DeleteTasks()
     elif userInput == 4:
-        countTasks()
+        CountTasks()
     elif userInput == 5:
         _quit = True
     else:
@@ -52,10 +104,7 @@ def handleMenuInput(userInput):
           
     return _quit
 
-
-
-def main():
-    _quit = False
+def ClearScreen():
     if os.name == 'posix':
         clearCommand = "clear"
     elif os.name == 'nt':
@@ -63,20 +112,23 @@ def main():
     
     system(clearCommand)
 
+
+def main():
+    global allTasks
+    allTasks = getTasks()
+
+    _quit = False
     
     while not _quit:
-        printMenu()
+          ClearScreen()
+          printMenu()
     
-        userInput = acceptInput()
+          userInput = acceptMenuInput()
 
-        system(clearCommand)
+          _quit = handleMenuInput(userInput)
+          
 
-        _quit = handleMenuInput(userInput)
-
-    print("Bye")
-
-
+print("Bye")
 
 if __name__ == "__main__":
     main()
-
