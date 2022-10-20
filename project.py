@@ -8,14 +8,14 @@ def elicitInt(_min, _max):
     while not valid:
         _in = input(f"Enter a Valid interger between {_min} and {_max} \
             (inclusive of both): ")
-    try:
-        _in = int(_in)
+        try:
+            _in = int(_in)
 
-        if _min <= _in <= _max:
+            if _min <= _in <= _max:
                 valid = True 
-        else:
-            print("Interger out of bounds")
-    except ValueError:
+            else:
+                print("Interger out of bounds")
+        except ValueError:
             print("Invalid interger provided")
     return _in
         
@@ -25,13 +25,33 @@ def printMenu():
 
 
 def acceptInput():
-    return elicitInt(1, 5, "Select a menu item: ")
+    return elicitInt(1, 5,)
 
 
-def handleInput(userInput):
-    print(userInput)
+def addTask(): pass
+def ListTasks(): pass
+def DeleteTasks(): pass
+def countTasks(): pass   
 
-    return userInput == 5
+
+def handleMenuInput(userInput):
+    _quit = False
+
+    if userInput == 1:
+        addTask()
+    elif userInput == 2:
+        listTasks()
+    elif userInput == 3:
+        deleteTask()
+    elif userInput == 4:
+        countTasks()
+    elif userInput == 5:
+        _quit = True
+    else:
+        raise ValueError("Not a valid Input")
+          
+    return _quit
+
 
 
 def main():
@@ -46,9 +66,12 @@ def main():
     
     while not _quit:
         printMenu()
-
+    
         userInput = acceptInput()
-        _quit = handleInput(userInput)
+
+        system(clearCommand)
+
+        _quit = handleMenuInput(userInput)
 
     print("Bye")
 
