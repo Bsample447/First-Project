@@ -2,6 +2,7 @@ from os import system
 import os
 import sys
 
+#this is an old version before Json
 
 allTasks = []
 
