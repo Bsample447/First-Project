@@ -3,6 +3,10 @@ import os
 import sys
 import json
 
+# Welcome to your brand new TODO list tracker, A helpful reminder program that is only mildly worse than a written list!
+# Some notes for use of program, this will create a "ThingsToDo.txt" file in your home directory, you may edit your text file or use the program to change the list
+# within the text file, False = your Task is not done, for best readability please run the program itself!
+
 
 
 currentPage = 0
@@ -100,6 +104,7 @@ def CheckTasks():
         temp = allTasks[index]
         allTasks[index] = allTasks[0]
         allTasks[0] = temp
+        
 
 
 
